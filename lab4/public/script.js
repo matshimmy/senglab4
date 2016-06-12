@@ -42,13 +42,48 @@ function drawBoard(state){
     // we make a jQuery object out of this, so that 
     // we can manipulate it via calls to the jQuery API. 
     var svg = $(makeSVG(W, H));
-
     // TODO: Implement board drawing. 
     
     //  You will want to append elements to the 
     //  svg variable using the svg.append(....) 
     //  method. 
-
+    
+    
+    //draw the squares
+    
+    var numOfPix = (500/(state.size-1));
+    var x1 = 0;
+    var y1 = 0;
+	for(x = 50; x<550; x += numOfPix){
+		
+		for(y = 50; y<550;y += numOfPix){
+			svg.append(makeRectangle(x, y, numOfPix-1, numOfPix-1, '#dab44a'));
+			svg.append(makeLine(x, y, x+numOfPix, y));
+			svg.append(makeLine(x, y, x, y+numOfPix));
+			if (state.board[y1][x1] != 0)
+				svg.append(makeCircle(x, y, 13, state.board[y1][x1]));
+			y1++;
+		}
+		y1 = 0;
+		x1++;
+	}
+	//bottom and side lines
+	svg.append(makeLine(50, 550, 550, 550));
+	svg.append(makeLine(550, 50, 550, 550));
+	
+	//goes through and adds the right side pieces and the bottom
+	for(y = 50; y<550;y += numOfPix){
+		if (state.board[y1][state.size-1] != 0)
+			svg.append(makeCircle(550, y, 13, state.board[y1][state.size-1]));
+		y1++;
+	}
+	x1 = 0;
+	for(x = 50; x<550;x += numOfPix){
+		if (state.board[state.size-1][x1] != 0)
+			svg.append(makeCircle(x, 550, 13, state.board[state.size-1][x1]));
+		x1++;
+	}
+	
     // append the svg object to the canvas object.
     canvas.append(svg);
 
